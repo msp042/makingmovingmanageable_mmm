@@ -5,7 +5,8 @@ class BoxesController < ApplicationController
 
   # GET /boxes
   def index
-    @boxes = Box.page(params[:page]).per(10)
+    @q = Box.ransack(params[:q])
+    @boxes = @q.result(:distinct => true).includes(:user, :items, :category).page(params[:page]).per(10)
   end
 
   # GET /boxes/1
